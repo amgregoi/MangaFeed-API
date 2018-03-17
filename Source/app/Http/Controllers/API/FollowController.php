@@ -11,6 +11,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Manga;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Models\Follow;
@@ -40,6 +41,12 @@ class FollowController extends Controller
             return response($validator->errors(),400);
         }
 
+        $lUser = User::getUserById($id);
+        if(!$lUser)
+        {
+           return response()->json(['result' => "invalid user id"], 401);
+        }
+
         $lMangaUrl = $request->input('url');
         $lFollowStatus = $request->input('followStatus');
         $lMangaImage = $request->input('image');
@@ -61,7 +68,8 @@ class FollowController extends Controller
 
             if ($lFollowUpdated)
             {
-                return response()->json(['result' => "success"], 200);
+
+                return response()->json(['result' => json_encode($lFollowUpdated)], 200);
             }
         }
 
