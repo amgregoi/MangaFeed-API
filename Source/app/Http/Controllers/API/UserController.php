@@ -42,7 +42,7 @@ class UserController extends Controller
             $lUser = User::where(['email' => $lEmail])->first();
             if ($lUser)
             {
-                return response()->json(['message' => "User with that email already exists"], 404);
+                return response()->json(['user' => json_encode($lUser)], 200);
             }
 
             $lUser = User::create([
